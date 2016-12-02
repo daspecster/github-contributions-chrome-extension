@@ -1,8 +1,8 @@
 var username = "";
 
 /**
- * Grab the user from github
- * Then parse the response html with the DOMParser to extract the username
+ * Grab the user from github, then parse the response html
+ * with the DOMParser to extract the username.
  * @param callback if it's set, it will be executed after the username is retrieved.
  */
 function get_username(callback) {
@@ -50,8 +50,8 @@ function draw(color, contributions) {
 }
 
 /**
- * Handle the contributions data by parsing through the temporary dom
- * Then calls draw to build the icon for the extension icon
+ * Handle the contributions data by parsing through the temporary dom,
+ * Then calls draw to build the icon for the extension icon.
  * @param response_dom
  */
 function handle_contrib_data(response_dom) {
@@ -66,7 +66,7 @@ function handle_contrib_data(response_dom) {
 }
 
 /**
- * Get the contributions for the given user and parse the data
+ * Get the contributions for the given user and parse the data.
  */
 function get_contrib() {
     request('get', "https://github.com/users/" + username + "/contributions")
@@ -81,7 +81,7 @@ function get_contrib() {
 
 /**
  * Make AJax request and call closure when ready.
- * @param url Where we're requesting the data
+ * @param url Where we're requesting the data.
  * @param method GET|POST|PUT|DELETE
  */
 function request(method, url) {
@@ -101,7 +101,7 @@ function request(method, url) {
         xhr.send();
     });
 }
-// Grab the username from github
+// Grab the username from github.
 get_username(get_contrib);
 // Grab the contribution data once a minute.
 setInterval(get_contrib, 60 /*seconds*/ * 1000 /*miliseconds*/);
