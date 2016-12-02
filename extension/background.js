@@ -2,24 +2,17 @@ var username = "";
 
 /**
  * Grab the user from github
- * Then parse the repsonse html with the DOMParser to extract the username
+ * Then parse the response html with the DOMParser to extract the username
  * @param callback if it's set, it will be executed after the username is retrieved.
  */
 function get_username(callback) {
-    var url = "https://github.com/";
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
+    request('get', "https://github.com")
+        .then(function(res) {
             var parser = new DOMParser();
-            var dom = parser.parseFromString(xhr.responseText, "text/html");
+            var dom = parser.parseFromString(res.responseText, "text/html");
             parse_username(dom);
-            if (callback) {
-                callback();
-            }
-        }
-    };
-    xhr.open("GET", url, true);
-    xhr.send();
+        })
+        .then(callback);
 }
 /**
  * Get the username from a meta tag named user-login.
@@ -44,12 +37,8 @@ function draw(color, contributions) {
     context.fillRect(0, 0, 19, 19);
 
     var color_hex = parseInt("0x" + color.slice(1));
-    if (color_hex < 0x44a340) {
-        context.text_color = "#FFFFFF";
-    } else {
-        context.text_color = "#000000";
-    }
-    context.fillStyle = text_color;
+    // Ternary operator to determine the fill style.
+    context.fillStyle = color_hex < 0x44a340 ? "#FFFFFF" : "#000000";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.font = "11px Arial";
@@ -80,18 +69,37 @@ function handle_contrib_data(response_dom) {
  * Get the contributions for the given user and parse the data
  */
 function get_contrib() {
-    console.log(username);
-    var contrib_url = "https://github.com/users/" + username + "/contributions";
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
+    request('get', "https://github.com/users/" + username + "/contributions")
+        .then(function (xhr) {
+            console.log(username);
+
             var parser = new DOMParser();
             var dom = parser.parseFromString(xhr.responseText, "text/html");
             handle_contrib_data(dom);
-        }
-    };
-    xhr.open("GET", contrib_url, true);
-    xhr.send();
+        });
+}
+
+/**
+ * Make AJax request and call closure when ready.
+ * @param url Where we're requesting the data
+ * @param method GET|POST|PUT|DELETE
+ */
+function request(method, url) {
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(xhr);
+            } else {
+                reject(xhr);
+            }
+        };
+        xhr.onerror = function () {
+            reject(xhr);
+        };
+        xhr.send();
+    });
 }
 // Grab the username from github
 get_username(get_contrib);
