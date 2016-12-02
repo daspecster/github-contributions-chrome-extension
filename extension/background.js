@@ -80,7 +80,7 @@ function get_contrib() {
 }
 
 /**
- * Make AJax request and call closure when ready.
+ * Make AJAX request and call closure when ready.
  * @param url Where we're requesting the data.
  * @param method GET|POST|PUT|DELETE
  */
