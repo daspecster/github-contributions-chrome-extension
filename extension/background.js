@@ -1,5 +1,10 @@
 username = "";
 
+/**
+ * Grab the user from github
+ * Then parse the repsonse html with the DOMParser to extract the username
+ * @param Closure callback if it's set, it will be executed after the username is retrieved.
+ */
 function get_username(callback) {
     var url = "https://github.com/";
     var xhr = new XMLHttpRequest();
@@ -16,12 +21,19 @@ function get_username(callback) {
     xhr.open("GET", url, true);
     xhr.send();
 }
-
+/**
+ * Get the username from a meta tag named user-login.
+ */
 function parse_username(content) {
     var user_meta = content.getElementsByName("user-login");
     username = user_meta[0].getAttribute('content');
 }
-
+/**
+ * This method will create a canvas later to be used as the icon in 
+ * the chrome menu. Once created, it will set the image data for chrome.
+ * @param hex color A hexadecimal color formated in hex.
+ * @param int contributions The number of contributions for a given day.
+ */
 function draw(color, contributions) {
   var canvas = document.createElement('canvas');
   canvas.width = 19;
@@ -48,6 +60,11 @@ function draw(color, contributions) {
   });
 }
 
+/**
+ * Handle the contributions data by parsing through the temporary dom
+ * Then calls draw to build the icon for the extention icon
+ * @param DOM response_dom
+ */
 function handle_contrib_data(response_dom) {
     var weeks = response_dom.getElementsByTagName("g");
     weeks = weeks[weeks.length-1];
@@ -59,7 +76,9 @@ function handle_contrib_data(response_dom) {
     draw(color, todays_contributions);
 }
 
-
+/**
+ * Get the contrbutions for the given user and parse the data 
+ */
 function get_contrib() {
     console.log(username);
     var contrib_url = "https://github.com/users/" + username + "/contributions";
@@ -74,6 +93,7 @@ function get_contrib() {
     xhr.open("GET", contrib_url, true);
     xhr.send();
 }
-
+// Grab the username from github
 get_username(get_contrib);
-setInterval(get_contrib, 6000);
+// Grab the contribution data once a minute.
+setInterval(get_contrib, 60 /*seconds*/ * 1000 /*miliseconds*/);
