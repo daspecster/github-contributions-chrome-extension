@@ -43,11 +43,11 @@ function draw(color, contributions) {
     context.fillStyle = color;
     context.fillRect(0, 0, 19, 19);
 
-    color_hex = parseInt("0x" + color.slice(1));
+    var color_hex = parseInt("0x" + color.slice(1));
     if (color_hex < 0x44a340) {
-        text_color = "#FFFFFF";
+        context.text_color = "#FFFFFF";
     } else {
-        text_color = "#000000";
+        context.text_color = "#000000";
     }
     context.fillStyle = text_color;
     context.textAlign = "center";
@@ -77,7 +77,7 @@ function handle_contrib_data(response_dom) {
 }
 
 /**
- * Get the contrbutions for the given user and parse the data
+ * Get the contributions for the given user and parse the data
  */
 function get_contrib() {
     console.log(username);
