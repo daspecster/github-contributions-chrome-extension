@@ -42,7 +42,7 @@ function draw(color, contributions) {
 
     var color_hex = parseInt("0x" + color.slice(1));
     // Ternary operator to determine the fill style.
-    context.fillStyle = color_hex < 0x44a340 ? "#FFFFFF" : "#000000";
+    context.fillStyle = color_hex < 0x55a340 ? "#FFFFFF" : "#000000";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.font = "11px Arial";
