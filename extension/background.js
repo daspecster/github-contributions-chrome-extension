@@ -20,6 +20,7 @@ function get_username(callback) {
 function parse_username(content) {
     var user_meta = content.getElementsByName("user-login");
     username = user_meta[0].getAttribute('content');
+    chrome.runtime.sendMessage({username: username});
 }
 /**
  * This method will create a canvas later to be used as the icon in
@@ -33,8 +34,11 @@ function draw(color, contributions) {
     canvas.height = 19;
 
     var context = canvas.getContext('2d');
+    context.beginPath();
+    context.arc(10, 10, 9, 0, Math.PI*2, true);
+    context.closePath();
     context.fillStyle = color;
-    context.fillRect(0, 0, 19, 19);
+    context.fill();
 
     var color_hex = parseInt("0x" + color.slice(1));
     // Ternary operator to determine the fill style.
@@ -71,10 +75,9 @@ function handle_contrib_data(response_dom) {
 function get_contrib() {
     request('get', "https://github.com/users/" + username + "/contributions")
         .then(function (xhr) {
-            console.log(username);
-
             var parser = new DOMParser();
             var dom = parser.parseFromString(xhr.responseText, "text/html");
+            chrome.runtime.sendMessage({contributions: xhr.responseText});
             handle_contrib_data(dom);
         });
 }
@@ -103,5 +106,12 @@ function request(method, url) {
 }
 // Grab the username from github.
 get_username(get_contrib);
+
+chrome.extension.onMessage.addListener(function(message, messageSender, sendResponse) {
+    if (message.go) {
+        get_contrib();
+    }
+});
+
 // Grab the contribution data once a minute.
 setInterval(get_contrib, 60 /*seconds*/ * 1000 /*miliseconds*/);
