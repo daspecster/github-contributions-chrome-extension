@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
 
-  "name": "Today's Github contributions",
+  "name": "Github contributions",
   "description": "This extension displays your daily Github contributions.",
   "version": "1.0",
- 
+
   "background": {
     "scripts": ["background.js"]
   },
