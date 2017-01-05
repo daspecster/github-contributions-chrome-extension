@@ -15,7 +15,6 @@
   },
   "permissions": [
     "activeTab",
-    "https://github.com/*",
-    "https://github.com/daspecster/github-contributions-chrome-extension/graphs/contributors"
+    "https://github.com/*"
   ]
 }
