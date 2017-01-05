@@ -27,3 +27,10 @@ chrome.extension.onMessage.addListener(function(message, messageSender, sendResp
         document.getElementById('weekly').innerHTML = total_count;
     }
 });
+
+$(document).ready(function(){
+   $('body').on('click', 'a', function(){
+     chrome.tabs.create({url: $(this).attr('href')});
+     return false;
+   });
+});
