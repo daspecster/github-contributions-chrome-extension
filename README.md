@@ -5,4 +5,4 @@ Put's the contributions info in your browser!
 
 ![GitHub contributions](http://i.imgur.com/vj0TdHv.png "GitHub contributions in Chrome.")
 
-You can view the extension in the Chrome Webstore [here!](https://chrome.google.com/webstore/detail/github-contributions/peiknoincjbnfdckomgepfhifpjpaoam)
+You can view the extension in the [Chrome Webstore](https://chrome.google.com/webstore/detail/github-contributions/peiknoincjbnfdckomgepfhifpjpaoam).
